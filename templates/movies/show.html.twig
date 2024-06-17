@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+		{% block title %}
+			{{ movie.title }}
+		{% endblock %}
+
+		{% block body %}
+<div class="container p-4 mx-auto">
+			<div class="flex justify-center mb-6 space-x-4">
+				<button id="homeBtn" class="px-4 py-2 text-white transition bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+					Accueil
+				</button>
+				<button id="castingBtn" class="px-4 py-2 text-white transition bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+					Casting
+				</button>
+				<button id="trailerBtn" class="px-4 py-2 text-white transition bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+					Bande Annonce
+				</button>
+			</div>
+
+			<div id="home" class="p-6 bg-white rounded-lg shadow-md section active">
+				<h2 class="mb-4 text-2xl font-bold text-gray-800">
+					{{ movie.title }}
+				</h2>
+				<img src="{{ movie.img }}" alt="{{ movie.title }}" class="mb-4 rounded-lg shadow-lg w-60">
+				<h3 class="mb-2 text-xl font-semibold text-gray-700">
+					Synopsis
+				</h3>
+				<p class="mb-4 text-gray-600">
+					{{ movie.synopsis }}
+				</p>
+				<h3 class="mb-2 text-xl font-semibold text-gray-700">
+					Date de Sortie
+				</h3>
+				<p class="text-gray-600">
+					{{ movie.releaseDate > date() ? 'À venir (' ~ movie.releaseDate|date('d-m-Y') ~ ')' : movie.releaseDate|date('d-m-Y') }}
+				</p>
+			</div>
+
+			<div id="casting" class="hidden p-6 bg-white rounded-lg shadow-md section">
+				<h2 class="mb-4 text-2xl font-bold text-gray-800">
+					Casting
+				</h2>
+				{% for actor in movie.actors %}
+					<div class="flex mb-2">
+						<p class="font-medium text-gray-700">
+							{{ actor.name }}
+						</p>
+						<div class="pl-4 text-gray-600">
+							as
+							{% for role in actor.roles %}
+								<p>
+									{{ role.name }}
+								</p>
+							{% endfor %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div id="trailer" class="hidden p-6 bg-white rounded-lg shadow-md section">
+				<h2 class="mb-4 text-2xl font-bold text-gray-800">
+					Bande Annonce
+				</h2>
+				<div class="flex items-center justify-center">
+					<iframe src='{{ movie.trailer }}' class="rounded-lg shadow-lg h-360 w-640" title="{{ movie.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				</div>
+			</div>
+
+			<div class="flex justify-between mt-4">
+				<a href="{{ path('app_movies') }}" class="text-blue-500 hover:underline">
+					Retour à la liste
+				</a>
+				<a href="{{ path('app_movies_edit', {'id': movie.id}) }}" class="text-blue-500 hover:underline">
+					Modifier
+				</a>
+			</div>
+
+			{{ include('movies/_delete_form.html.twig') }}
+		</div>
+
+
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+			<script>
+				$(document).ready(function () {
+$('#homeBtn').click(function () {
+$('.section').removeClass('active');
+$('#home').addClass('active');
+});
+$('#castingBtn').click(function () {
+$('.section').removeClass('active');
+$('#casting').addClass('active');
+});
+$('#trailerBtn').click(function () {
+$('.section').removeClass('active');
+$('#trailer').addClass('active');
+});
+});
+			</script>
+		{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+		{% block title %}
+			Movies index
+		{% endblock %}
+
+		{% block body %}
+			<div class="container mx-auto">
+				<h1 class="mb-6 text-3xl font-bold">
+					Movies Index
+				</h1>
+
+				<table class="min-w-full overflow-hidden bg-white rounded-lg shadow-md">
+					<thead class="text-white bg-blue-500">
+						<tr>
+							<th class="w-1/4 px-4 py-3 text-sm font-semibold uppercase">
+								Title
+							</th>
+							<th class="w-1/4 px-4 py-3 text-sm font-semibold uppercase">
+								Synopsis
+							</th>
+							<th class="w-1/4 px-4 py-3 text-sm font-semibold uppercase">
+								Release Date
+							</th>
+							<th class="w-1/4 px-4 py-3 text-sm font-semibold uppercase">
+								Actions
+							</th>
+						</tr>
+					</thead>
+					<tbody class="text-gray-700">
+						{% for movie in movies %}
+							<tr class="hover:bg-gray-100">
+								<td class="px-4 py-3">
+									{{ movie.title }}
+								</td>
+								<td class="px-4 py-3">
+									<img src="{{movie.img}}" alt="{{movie.title}}" class="w-48 mb-4 rounded-lg shadow-lg">
+								</td>
+								<td class="px-4 py-3">
+									{{ movie.releaseDate ? movie.releaseDate|date('d-m-Y') : '' }}
+								</td>
+								<td class="px-4 py-3">
+									<a href="{{ path('app_movies_show', {'id': movie.id}) }}" class="text-blue-500 hover:text-blue-700">
+										Show
+									</a>
+									<a href="{{ path('app_movies_edit', {'id': movie.id}) }}" class="ml-4 text-yellow-500 hover:text-yellow-700">
+										Edit
+									</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="4" class="px-4 py-3 text-center">
+									No records found
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+				<div class="mt-6">
+					<a href="{{ path('app_movies_new') }}" class="px-4 py-2 text-white transition bg-blue-500 rounded hover:bg-blue-700">
+						Create new
+					</a>
+				</div>
+			</div>
+
+		{% endblock %}
